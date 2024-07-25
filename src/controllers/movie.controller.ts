@@ -50,6 +50,22 @@ export class MovieController {
         }
     }
 
+    static async nowPlaying(req: Request, res: Response, next: NextFunction) {
+        let page = req.query.page ? parseInt(req.query.page as string) : 1;
+        try {
+            const nowPlayingMovies = await MovieService.nowPlaying(page);
+            
+            return res
+                .json(nowPlayingMovies)
+                .status(200);
+        } catch (error) {
+            console.error('Error in MovieController.nowPlaying:', error);
+            res
+                .status(500)
+                .json({ error: 'Failed to fetch now playing movies' });
+        }
+    }
+
     static async detail(req: Request, res: Response, next: NextFunction) {
         let id = req.params.id;
         try {

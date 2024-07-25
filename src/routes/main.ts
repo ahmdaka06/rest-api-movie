@@ -14,6 +14,7 @@ router.get("/api/v2", (req, res) => {
 router.get("/api/v2/popular", MovieController.popular);
 router.get("/api/v2/top_rated", MovieController.topRated);
 router.get("/api/v2/upcoming", MovieController.upcoming);
+router.get("/api/v2/now_playing", MovieController.nowPlaying);
 router.get("/api/v2/movie/:id", MovieController.detail);
 
 
