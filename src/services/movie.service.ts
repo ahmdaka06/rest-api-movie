@@ -92,8 +92,6 @@ export class MovieService {
                 release_date: movie.release_date,
             }));
 
-            const baseUrl = `${process.env.TMDB_API_URL}/movie/popular`;
-
             const paginatedResponse: PaginatedResponse<Movie> = {
                 page: data.page,
                 total_pages: data.total_pages,
