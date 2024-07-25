@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import { Movie, MovieDetail, PaginatedResponse } from '../models/movie.model';
 import { TMDBAPIDetailResponse, TMDBAPIResponse, TMDBGenreResponse, TMDBMovieResponse } from '../responses/api.response';
 import { GenreService } from './genre.service';
+import { setPathImage } from '../helpers/utils';
 
 export class MovieService {
     static async popular(page: number): Promise<PaginatedResponse<Movie>> {
@@ -31,8 +32,8 @@ export class MovieService {
                 id: movie.id,
                 title: movie.title,
                 genres: movie.genre_ids.map(id => genreMap.get(id) || 'Unknown'),
-                poster_path: `https://image.tmdb.org/t/p/original/${movie.poster_path}`,
-                backdrop_path: `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`,
+                poster_path: setPathImage(movie.poster_path),
+                backdrop_path: setPathImage(movie.backdrop_path),
                 overview: movie.overview,
                 popularity: movie.popularity,
                 release_date: movie.release_date
@@ -84,8 +85,8 @@ export class MovieService {
                 id: movie.id,
                 title: movie.title,
                 genres: movie.genre_ids.map(id => genreMap.get(id) || 'Unknown'),
-                poster_path: `https://image.tmdb.org/t/p/original/${movie.poster_path}`,
-                backdrop_path: `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`,
+                poster_path: setPathImage(movie.poster_path),
+                backdrop_path: setPathImage(movie.backdrop_path),
                 overview: movie.overview,
                 popularity: movie.popularity,
                 release_date: movie.release_date,

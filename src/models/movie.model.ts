@@ -1,3 +1,5 @@
+
+
 export type Movie = {
     id: number;
     genres: string[];
