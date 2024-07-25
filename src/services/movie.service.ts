@@ -1,6 +1,7 @@
 import fetch from 'node-fetch'
-import { Movie, PaginatedResponse } from '../models/movie.model';
-import { TMDBAPIResponse } from '../responses/api.response';
+import { Movie, MovieDetail, PaginatedResponse } from '../models/movie.model';
+import { TMDBAPIDetailResponse, TMDBAPIResponse, TMDBGenreResponse, TMDBMovieResponse } from '../responses/api.response';
+import { GenreService } from './genre.service';
 
 export class MovieService {
     static async popular(page: number): Promise<PaginatedResponse<Movie>> {
@@ -23,24 +24,29 @@ export class MovieService {
 
             const data: TMDBAPIResponse = await response.json();
 
-            // Pastikan format data sesuai dengan tipe PaginatedResponse
+            const genres: TMDBGenreResponse[] = await GenreService.get();
+            const genreMap = new Map<number, string>(genres.map(genre => [genre.id, genre.name]));
+
+            const movies: Movie[] = data.results.map((movie) => ({
+                id: movie.id,
+                title: movie.title,
+                genres: movie.genre_ids.map(id => genreMap.get(id) || 'Unknown'),
+                poster_path: `https://image.tmdb.org/t/p/original/${movie.poster_path}`,
+                backdrop_path: `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`,
+                overview: movie.overview,
+                popularity: movie.popularity,
+                release_date: movie.release_date
+            }));
+
             const paginatedResponse: PaginatedResponse<Movie> = {
                 page: data.page,
                 total_pages: data.total_pages,
                 total_results: data.total_results,
-                data: data.results.map((movie: any) => ({
-                    id: movie.id,
-                    title: movie.title,
-                    poster_path: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
-                    backdrop_path: `https://image.tmdb.org/t/p/original${movie.backdrop_path}`,
-                    overview: movie.overview,
-                    popularity: movie.popularity,
-                    release_date: movie.release_date
-                })),
-                next: data.page < data.total_pages ? `${process.env.URL}?page=${data.page + 1}` : undefined,
-                previous: data.page > 1 ? `${process.env.URL}?page=${data.page - 1}` : undefined,
-                first: data.total_pages > 0 ? `${process.env.URL}?page=1` : undefined,
-                last: data.total_pages > 0 ? `${process.env.URL}?page=${data.total_pages}` : undefined
+                data: movies,
+                next: data.page < data.total_pages ? `${process.env.URL}/movie/popular?page=${data.page + 1}` : undefined,
+                previous: data.page > 1 ? `${process.env.URL}/movie/popular?page=${data.page - 1}` : undefined,
+                first: data.total_pages > 0 ? `${process.env.URL}/movie/popular?page=1` : undefined,
+                last: data.total_pages > 0 ? `${process.env.URL}/movie/popular?page=${data.total_pages}` : undefined
             };
 
             return paginatedResponse;
@@ -69,26 +75,33 @@ export class MovieService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data = await response.json();
+            const data: TMDBAPIResponse = await response.json();
 
-            // Pastikan format data sesuai dengan tipe PaginatedResponse
+            const genres: TMDBGenreResponse[] = await GenreService.get();
+            const genreMap = new Map<number, string>(genres.map(genre => [genre.id, genre.name]));
+
+            const movies: Movie[] = data.results.map((movie) => ({
+                id: movie.id,
+                title: movie.title,
+                genres: movie.genre_ids.map(id => genreMap.get(id) || 'Unknown'),
+                poster_path: `https://image.tmdb.org/t/p/original/${movie.poster_path}`,
+                backdrop_path: `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`,
+                overview: movie.overview,
+                popularity: movie.popularity,
+                release_date: movie.release_date,
+            }));
+
+            const baseUrl = `${process.env.TMDB_API_URL}/movie/popular`;
+
             const paginatedResponse: PaginatedResponse<Movie> = {
                 page: data.page,
                 total_pages: data.total_pages,
                 total_results: data.total_results,
-                data: data.results.map((movie: any) => ({
-                    id: movie.id,
-                    title: movie.title,
-                    poster_path: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
-                    backdrop_path: `https://image.tmdb.org/t/p/original${movie.backdrop_path}`,
-                    overview: movie.overview,
-                    popularity: movie.popularity,
-                    release_date: movie.release_date
-                })),
-                next: data.page < data.total_pages ? `${process.env.URL}?page=${data.page + 1}` : undefined,
-                previous: data.page > 1 ? `${process.env.URL}?page=${data.page - 1}` : undefined,
-                first: data.total_pages > 0 ? `${process.env.URL}?page=1` : undefined,
-                last: data.total_pages > 0 ? `${process.env.URL}?page=${data.total_pages}` : undefined
+                data: movies,
+                next: data.page < data.total_pages ? `${process.env.URL}/movie/popular?page=${data.page + 1}` : undefined,
+                previous: data.page > 1 ? `${process.env.URL}/movie/popular?page=${data.page - 1}` : undefined,
+                first: data.total_pages > 0 ? `${process.env.URL}/movie/popular?page=1` : undefined,
+                last: data.total_pages > 0 ? `${process.env.URL}/movie/popular?page=${data.total_pages}` : undefined
             };
 
             return paginatedResponse;
@@ -117,19 +130,23 @@ export class MovieService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data = await response.json();
+            const data: TMDBAPIDetailResponse = await response.json();
 
-            // Pastikan format data sesuai dengan tipe Movie
-            const movie: Movie = {
+            const movie: MovieDetail = {
                 id: data.id,
                 title: data.title,
-                poster_path: `https://image.tmdb.org/t/p/original${data.poster_path}`,
-                backdrop_path: `https://image.tmdb.org/t/p/original${data.backdrop_path}`,
+                genres: data.genres.map(genre => genre.name),
+                poster_path: `https://image.tmdb.org/t/p/original/${data.poster_path}`,
+                backdrop_path: `https://image.tmdb.org/t/p/original/${data.backdrop_path}`,
                 overview: data.overview,
                 popularity: data.popularity,
-                release_date: data.release_date
+                release_date: data.release_date,
+                status: data.status,
+                tagline: data.tagline,
+                vote: data.vote_average,
+                vote_count: data.vote_count
             };
-
+           
             return movie;
             
         } catch (error) {

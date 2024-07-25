@@ -1,5 +1,6 @@
 export type Movie = {
     id: number;
+    genres: string[];
     title: string;
     poster_path: string;
     backdrop_path: string;
@@ -8,7 +9,27 @@ export type Movie = {
     release_date: string;
 }
 
-export interface PaginatedResponse<T> {
+export type MovieDetail = {
+    id: number;
+    genres: string[];
+    title: string;
+    poster_path: string;
+    backdrop_path: string;
+    overview: string;
+    popularity: number;
+    release_date: string;
+    status: string;
+    tagline: string;
+    vote: number;
+    vote_count: number;
+}
+
+export type Genre = {
+    id: number;
+    name: string;
+}
+
+export type PaginatedResponse<T> = {
     page: number;
     total_pages: number;
     total_results: number;
