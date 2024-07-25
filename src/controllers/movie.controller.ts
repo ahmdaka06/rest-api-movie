@@ -34,6 +34,22 @@ export class MovieController {
         }
     }
 
+    static async upcoming(req: Request, res: Response, next: NextFunction) {
+        let page = req.query.page ? parseInt(req.query.page as string) : 1;
+        try {
+            const upcomingMovies = await MovieService.upcoming(page);
+            
+            return res
+                .json(upcomingMovies)
+                .status(200);
+        } catch (error) {
+            console.error('Error in MovieController.upcoming:', error);
+            res
+                .status(500)
+                .json({ error: 'Failed to fetch upcoming movies' });
+        }
+    }
+
     static async detail(req: Request, res: Response, next: NextFunction) {
         let id = req.params.id;
         try {
