@@ -1,7 +1,7 @@
 import express from "express";
 import { 
-    PopularController 
-} from "../controllers/popular.controller";
+    MovieController
+} from "../controllers/movie.controller";
 
 export const router = express.Router();
 
@@ -11,5 +11,7 @@ router.get("/api/v2", (req, res) => {
         .status(200);
 });
 
-router.get("/api/v2/popular", PopularController.list);
+router.get("/api/v2/popular", MovieController.popular);
+router.get("/api/v2/top_rated", MovieController.topRated);
+router.get("/api/v2/movie/:id", MovieController.detail);
 
