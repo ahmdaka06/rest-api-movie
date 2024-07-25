@@ -5,7 +5,7 @@ import { GenreService } from './genre.service';
 import { setPathImage } from '../helpers/utils';
 
 export class MovieService {
-    static async popular(page: number): Promise<PaginatedResponse<Movie>> {
+    static async getPopularMovie(page: number): Promise<PaginatedResponse<Movie>> {
         try {
 
             const url = `${process.env.TMDB_API_URL}/movie/popular?page=${page}`;
@@ -58,7 +58,7 @@ export class MovieService {
         }
     }
 
-    static async topRated(page: number): Promise<PaginatedResponse<Movie>> {
+    static async getTopRatedMovie(page: number): Promise<PaginatedResponse<Movie>> {
         try {
 
             const url = `${process.env.TMDB_API_URL}/movie/top_rated?page=${page}`;
@@ -111,7 +111,7 @@ export class MovieService {
         }
     }
 
-    static async upcoming(page: number): Promise<PaginatedResponse<Movie>> {
+    static async getUpcomingMovie(page: number): Promise<PaginatedResponse<Movie>> {
         try {
 
             const url = `${process.env.TMDB_API_URL}/movie/upcoming?page=${page}`;
@@ -164,7 +164,7 @@ export class MovieService {
         }
     }
 
-    static async nowPlaying(page: number): Promise<PaginatedResponse<Movie>> {
+    static async getNowPlaying(page: number): Promise<PaginatedResponse<Movie>> {
         try {
 
             const url = `${process.env.TMDB_API_URL}/movie/now_playing?page=${page}`;
@@ -217,7 +217,7 @@ export class MovieService {
         }
     }
 
-    static async detail(id: string): Promise<Movie> {
+    static async getDetailByIdMovie(id: string): Promise<Movie> {
         try {
 
             const url = `${process.env.TMDB_API_URL}/movie/${id}`;

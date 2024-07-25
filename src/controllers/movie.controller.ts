@@ -5,7 +5,7 @@ export class MovieController {
     static async popular(req: Request, res: Response, next: NextFunction) {
         let page = req.query.page ? parseInt(req.query.page as string) : 1;
         try {
-            const popularMovies = await MovieService.popular(page);
+            const popularMovies = await MovieService.getPopularMovie(page);
             
             return res
                 .json(popularMovies)
@@ -21,7 +21,7 @@ export class MovieController {
     static async topRated(req: Request, res: Response, next: NextFunction) {
         let page = req.query.page ? parseInt(req.query.page as string) : 1;
         try {
-            const topRatedMovies = await MovieService.topRated(page);
+            const topRatedMovies = await MovieService.getTopRatedMovie(page);
             
             return res
                 .json(topRatedMovies)
@@ -37,7 +37,7 @@ export class MovieController {
     static async upcoming(req: Request, res: Response, next: NextFunction) {
         let page = req.query.page ? parseInt(req.query.page as string) : 1;
         try {
-            const upcomingMovies = await MovieService.upcoming(page);
+            const upcomingMovies = await MovieService.getUpcomingMovie(page);
             
             return res
                 .json(upcomingMovies)
@@ -53,7 +53,7 @@ export class MovieController {
     static async nowPlaying(req: Request, res: Response, next: NextFunction) {
         let page = req.query.page ? parseInt(req.query.page as string) : 1;
         try {
-            const nowPlayingMovies = await MovieService.nowPlaying(page);
+            const nowPlayingMovies = await MovieService.getNowPlaying(page);
             
             return res
                 .json(nowPlayingMovies)
@@ -69,7 +69,7 @@ export class MovieController {
     static async detail(req: Request, res: Response, next: NextFunction) {
         let id = req.params.id;
         try {
-            const movie = await MovieService.detail(id);
+            const movie = await MovieService.getDetailByIdMovie(id);
             
             return res
                 .json(movie)
