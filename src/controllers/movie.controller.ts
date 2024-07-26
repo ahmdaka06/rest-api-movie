@@ -53,7 +53,7 @@ export class MovieController {
     static async nowPlaying(req: Request, res: Response, next: NextFunction) {
         let page = req.query.page ? parseInt(req.query.page as string) : 1;
         try {
-            const nowPlayingMovies = await MovieService.getNowPlaying(page);
+            const nowPlayingMovies = await MovieService.getNowPlayingMovie(page);
             
             return res
                 .json(nowPlayingMovies)
@@ -63,6 +63,23 @@ export class MovieController {
             res
                 .status(500)
                 .json({ error: 'Failed to fetch now playing movies' });
+        }
+    }
+
+    static async search(req: Request, res: Response, next: NextFunction) {
+        let query = req.query.query as string;
+        let page = req.query.page ? parseInt(req.query.page as string) : 1;
+        try {
+            const searchMovies = await MovieService.getSearchMovie({query, page});
+            
+            return res
+                .json(searchMovies)
+                .status(200);
+        } catch (error) {
+            console.error('Error in MovieController.search:', error);
+            res
+                .status(500)
+                .json({ error: 'Failed to fetch search movies' });
         }
     }
 
