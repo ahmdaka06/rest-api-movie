@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
-import { TMDBGenreResponse } from '../responses/api.response';
+import { Genre } from '../models/genre.model';
 
 export class GenreService {
-    static async get(): Promise<TMDBGenreResponse[]> {
+    static async get(): Promise<Genre[]> {
         try {
             const url = `${process.env.TMDB_API_URL}/genre/movie/list`;
             const options = {

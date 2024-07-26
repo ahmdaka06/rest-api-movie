@@ -1,8 +1,9 @@
 import fetch from 'node-fetch'
 import { Movie, MovieDetail, PaginatedResponse } from '../models/movie.model';
-import { TMDBAPIDetailResponse, TMDBAPIResponse, TMDBGenreResponse, TMDBMovieResponse } from '../responses/api.response';
 import { GenreService } from './genre.service';
 import { setPathImage } from '../helpers/utils';
+import { TMDBAllMovieResponse, TMDBMovieDetailResponse } from '../responses/movie.response';
+import { TMDBGenreResponse } from '../responses/genre.response';
 
 export class MovieService {
     static async getPopularMovie(page: number): Promise<PaginatedResponse<Movie>> {
@@ -23,7 +24,7 @@ export class MovieService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data: TMDBAPIResponse = await response.json();
+            const data: TMDBAllMovieResponse = await response.json();
 
             const genres: TMDBGenreResponse[] = await GenreService.get();
             const genreMap = new Map<number, string>(genres.map(genre => [genre.id, genre.name]));
@@ -76,7 +77,7 @@ export class MovieService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data: TMDBAPIResponse = await response.json();
+            const data: TMDBAllMovieResponse = await response.json();
 
             const genres: TMDBGenreResponse[] = await GenreService.get();
             const genreMap = new Map<number, string>(genres.map(genre => [genre.id, genre.name]));
@@ -129,7 +130,7 @@ export class MovieService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data: TMDBAPIResponse = await response.json();
+            const data: TMDBAllMovieResponse = await response.json();
 
             const genres: TMDBGenreResponse[] = await GenreService.get();
             const genreMap = new Map<number, string>(genres.map(genre => [genre.id, genre.name]));
@@ -182,7 +183,7 @@ export class MovieService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data: TMDBAPIResponse = await response.json();
+            const data: TMDBAllMovieResponse = await response.json();
 
             const genres: TMDBGenreResponse[] = await GenreService.get();
             const genreMap = new Map<number, string>(genres.map(genre => [genre.id, genre.name]));
@@ -241,7 +242,7 @@ export class MovieService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data: TMDBAPIResponse = await response.json();
+            const data: TMDBAllMovieResponse = await response.json();
 
             const genres: TMDBGenreResponse[] = await GenreService.get();
             const genreMap = new Map<number, string>(genres.map(genre => [genre.id, genre.name]));
@@ -294,7 +295,7 @@ export class MovieService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data: TMDBAPIDetailResponse = await response.json();
+            const data: TMDBMovieDetailResponse = await response.json();
 
             const movie: MovieDetail = {
                 id: data.id,

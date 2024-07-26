@@ -1,3 +1,5 @@
+import { TMDBGenreResponse } from "./genre.response";
+
 export type TMDBMovieResponse = {
     id: number;
     genre_ids: number[];
@@ -9,19 +11,14 @@ export type TMDBMovieResponse = {
     release_date: string;
 }
 
-export type TMDBGenreResponse = {
-    id: number;
-    name: string;
-}
-
-export type TMDBAPIResponse = {
+export type TMDBAllMovieResponse = {
     page: number;
     total_pages: number;
     total_results: number;
     results: TMDBMovieResponse[];
 }
 
-export type TMDBAPIDetailResponse = {
+export type TMDBMovieDetailResponse = {
     id: number;
     genres: TMDBGenreResponse[];
     title: string;

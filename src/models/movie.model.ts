@@ -1,5 +1,3 @@
-
-
 export type Movie = {
     id: number;
     genres: string[];
@@ -24,11 +22,6 @@ export type MovieDetail = {
     tagline: string;
     vote: number;
     vote_count: number;
-}
-
-export type Genre = {
-    id: number;
-    name: string;
 }
 
 export type PaginatedResponse<T> = {
