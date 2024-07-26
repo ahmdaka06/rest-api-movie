@@ -1,13 +1,13 @@
 import { setPathImage } from '../helpers/utils';
 import { Actor, PaginatedResponse } from '../models/actor.model';
-import { Movie } from '../models/movie.model';
-import { TMDBAPIResponse, TMDBGenreResponse } from "../responses/movie.response";
+import { TMDBAllActorResponse } from '../responses/actor.response';
+import { TMDBGenreResponse } from '../responses/genre.response';
 import { GenreService } from "./genre.service";
 
 export class ActorService {
     static async getActors(page: number = 1): Promise<PaginatedResponse<Actor>> {
         try {
-            const url = `${process.env.TMDB_API_URL}/movie/popular?page=${page}`;
+            const url = `${process.env.TMDB_API_URL}/person/popular?page=${page}`;
             const options = {
                 method: 'GET',
                 headers: {
@@ -22,7 +22,7 @@ export class ActorService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data: TMDBAPIResponse = await response.json();
+            const data: TMDBAllActorResponse = await response.json();
 
             const genres: TMDBGenreResponse[] = await GenreService.get();
             const genreMap = new Map<number, string>(genres.map(genre => [genre.id, genre.name]));
@@ -32,7 +32,17 @@ export class ActorService {
                 name: actor.name,
                 original_name: actor.original_name,
                 profile_path: setPathImage(actor.profile_path),
-                popularity: actor.popularity
+                popularity: actor.popularity,
+                known_for: actor.known_for.map((movie) => ({
+                    id: movie.id,
+                    title: movie.title,
+                    genres: movie.genre_ids.map(genreId => genreMap.get(genreId) || 'Unknown'),
+                    poster_path: setPathImage(movie.poster_path),
+                    backdrop_path: setPathImage(movie.backdrop_path),
+                    overview: movie.overview,
+                    popularity: movie.popularity,
+                    release_date: movie.release_date,
+                }))
             }));
 
             const paginatedResponse: PaginatedResponse<Actor> = {
