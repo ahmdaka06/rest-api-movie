@@ -20,5 +20,6 @@ router.get("/api/v2/now_playing", MovieController.nowPlaying);
 router.get("/api/v2/movie/:id", MovieController.detail);
 
 router.get("/api/v2/actor", ActorController.list);
+router.get("/api/v2/actor/:id", ActorController.detail);
 
 

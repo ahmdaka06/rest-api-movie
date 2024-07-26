@@ -18,4 +18,19 @@ export class ActorController {
         }
     }
 
+    static async detail(req: Request, res: Response, next: NextFunction) {
+        let id = req.params.id;
+        try {
+            const actor = await ActorService.getDetailByIdActor(id);
+            return res
+                .json(actor)
+                .status(200);
+        } catch (error) {
+            console.error('Error in MovieController.detail:', error);
+            res
+                .status(500)
+                .json({ error: 'Failed to fetch movie detail' });
+        }
+    }
+
 }

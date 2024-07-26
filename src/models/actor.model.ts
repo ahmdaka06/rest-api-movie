@@ -8,6 +8,23 @@ export type Actor = {
     popularity: number;
 }
 
+export type ActorDetail = {
+    id: number
+    imdb_id: string
+    name: string
+    adult: boolean
+    also_known_as: any[]
+    biography: string
+    birthday: string
+    deathday: any
+    gender: string
+    homepage: any
+    known_for_department: string
+    place_of_birth: string
+    popularity: number
+    profile_path: string
+}
+
 export type PaginatedResponse<T> = {
     page: number;
     total_pages: number;
